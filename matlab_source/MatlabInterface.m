@@ -24,19 +24,19 @@ classdef MatlabInterface
             delete([self.shared_folder,'*'])
         end
         
-        function set_matlab_file(filename)
+        function set_matlab_filename(filename)
             self.matlab_file = [self.shared_folder, filename];
         end
         
-        function set_matlab_flag(filename)
+        function set_matlab_flagname(filename)
             self.matlab_flag = [self.shared_folder, filename];
         end
         
-        function set_python_file(filename)
+        function set_python_filename(filename)
             self.python_file = [self.shared_folder, filename];
         end
         
-        function set_python_flag(filename)
+        function set_python_flagname(filename)
             self.python_flag = [self.shared_folder, filename];
         end
         
