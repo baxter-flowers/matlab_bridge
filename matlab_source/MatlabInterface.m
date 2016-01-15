@@ -13,15 +13,31 @@ classdef MatlabInterface
     
     methods
         function self = MatlabInterface()
-            self.matlab_flag = [self.shared_folder,self.matlab_flag];
-            self.python_flag = [self.shared_folder,self.python_flag];
-            self.matlab_file = [self.shared_folder,self.matlab_file];
-            self.python_file = [self.shared_folder,self.python_file];
+            self.matlab_flag = [self.shared_folder, self.matlab_flag];
+            self.python_flag = [self.shared_folder, self.python_flag];
+            self.matlab_file = [self.shared_folder, self.matlab_file];
+            self.python_file = [self.shared_folder, self.python_file];
             
             % create the folder for file exchange
             [s,mess,messid] = mkdir(self.shared_folder);
             % in case the folder already exist clear its content
             delete([self.shared_folder,'*'])
+        end
+        
+        function set_matlab_file(filename)
+            self.matlab_file = [self.shared_folder, filename];
+        end
+        
+        function set_matlab_flag(filename)
+            self.matlab_flag = [self.shared_folder, filename];
+        end
+        
+        function set_python_file(filename)
+            self.python_file = [self.shared_folder, filename];
+        end
+        
+        function set_python_flag(filename)
+            self.python_flag = [self.shared_folder, filename];
         end
         
         function bool_flag = is_python_flag_set(self)
