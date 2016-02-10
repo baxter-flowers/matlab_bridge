@@ -16,8 +16,8 @@ class PythonInterface:
                 try:
                     if os.path.isfile(file_path):
                         os.unlink(file_path)
-                except Exception, e:
-                    print e
+                except Exception as e:
+                    print(e)
         # set the flag path
         self.shared_folder = shared_folder
         self.__matlab_flag = 'flagMatlabFinished.txt'
