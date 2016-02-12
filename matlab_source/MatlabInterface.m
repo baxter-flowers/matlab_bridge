@@ -5,7 +5,7 @@ classdef MatlabInterface
     properties
         shared_folder = '/tmp/matlab_bridge/';
         matlab_flag = 'flagMatlabFinished.txt';
-        python_flag = 'flagPythonfinished.txt'
+        python_flag = 'flagPythonFinished.txt'
         matlab_file = 'matlab_file.json';
         python_file = 'python_file.json';
         rate = 0.001;
