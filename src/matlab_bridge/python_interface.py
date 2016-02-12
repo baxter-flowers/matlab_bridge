@@ -71,8 +71,6 @@ class PythonInterface:
         # loop until the flag is set
         while not self.is_matlab_flag_set():
             time.sleep(self.rate)
-        # unset the flag
-        self.unset_matlab_flag()
 
     def set_python_flag(self):
         open(self.python_flag, 'a').close()
@@ -95,5 +93,8 @@ class PythonInterface:
             data = json.load(data_file)
         # remove the read file
         self.remove_matlab_file()
+        # unset the flag
+        self.unset_matlab_flag()
         # return the structure
         return data
+

@@ -54,8 +54,6 @@ classdef MatlabInterface
             while ~self.is_python_flag_set()
                 pause(self.rate)
             end
-            % unset the flag
-            self.unset_python_flag()
         end
         
         function set_matlab_flag(self)
@@ -81,6 +79,8 @@ classdef MatlabInterface
             s = loadjson(self.python_file);
             % remove the read file
             self.remove_python_file()
+            % unset the flag
+            self.unset_python_flag()
         end
     end
 end
