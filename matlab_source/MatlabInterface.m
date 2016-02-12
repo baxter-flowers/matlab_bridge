@@ -3,43 +3,29 @@ classdef MatlabInterface
     %   Detailed explanation goes here
     
     properties
-        shared_folder = '/tmp/matlab_bridge/';
-        matlab_flag = 'flagMatlabFinished.txt';
-        python_flag = 'flagPythonFinished.txt'
-        matlab_file = 'matlab_file.json';
-        python_file = 'python_file.json';
-        rate = 0.001;
+            matlab_flag =  '';
+            python_flag = '';
+            matlab_file = '';
+            python_file = '';
+            rate = 0.001;
     end
     
     methods
-        function self = MatlabInterface()
-            self.matlab_flag = [self.shared_folder, self.matlab_flag];
-            self.python_flag = [self.shared_folder, self.python_flag];
-            self.matlab_file = [self.shared_folder, self.matlab_file];
-            self.python_file = [self.shared_folder, self.python_file];
-            
+        function self = MatlabInterface(channel_name)
+            if nargin == 0
+                channel_name = 'default'
+            end
+            shared_folder = [tempdir, 'matlab_bridge/']
+            self.matlab_flag =  [shared_folder, channel_name, '/flagMatlabFinished.txt'];
+            self.python_flag = [shared_folder, channel_name, '/flagPythonFinished.txt']
+            self.matlab_file = [shared_folder, channel_name, '/matlab_file.json'];
+            self.python_file = [shared_folder, channel_name, '/python_file.json'];
             % create the folder for file exchange
-            [s,mess,messid] = mkdir(self.shared_folder);
+            [s,mess,messid] = mkdir(shared_folder);
             % in case the folder already exist clear its content
-            delete([self.shared_folder,'*'])
+            delete([shared_folder,'*'])
         end
-        
-        function obj = set.matlab_file(obj, filename)
-            obj.matlab_file = [obj.shared_folder, filename];
-        end
-        
-        function obj = set.matlab_flag(obj, filename)
-            obj.matlab_flag = [obj.shared_folder, filename];
-        end
-        
-        function obj = set.python_file(obj, filename)
-            obj.python_file = [obj.shared_folder, filename];
-        end
-        
-        function obj = set.python_flag(obj, filename)
-            obj.python_flag = [obj.shared_folder, filename];
-        end
-        
+               
         function bool_flag = is_python_flag_set(self)
             % check if file exist
             bool_flag = (exist(self.python_flag, 'file') == 2);

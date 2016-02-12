@@ -2,10 +2,11 @@
 import os.path
 import json
 import time
+import tempfile
 
-
-class PythonInterface:
-    def __init__(self, shared_folder='/tmp/matlab_bridge/'):
+class PythonInterface(object):
+    def __init__(self, channel_name="default"):
+        shared_folder = os.path.join(tempfile.gettempdir(), 'matlab_bridge', channel_name)
         # create share_folder if necessary
         if not os.path.exists(shared_folder):
             os.makedirs(shared_folder)
@@ -19,47 +20,15 @@ class PythonInterface:
                 except Exception as e:
                     print(e)
         # set the flag path
-        self.shared_folder = shared_folder
-        self.__matlab_flag = 'flagMatlabFinished.txt'
-        self.__python_flag = 'flagPythonFinished.txt'
+
+        self.matlab_flag = os.path.join(shared_folder, 'flagMatlabFinished.txt')
+        self.python_flag = os.path.join(shared_folder, 'flagPythonFinished.txt')
         # define matlab file to read
-        self.__matlab_file = 'matlab_file.json'
+        self.matlab_file = os.path.join(shared_folder, 'matlab_file.json')
         # define python file to send
-        self.__python_file = 'python_file.json'
+        self.python_file = os.path.join(shared_folder, 'python_file.json')
         # define the rate for sleeping
         self.rate = 0.01
-
-    @property
-    def matlab_flag(self):
-        return self.__matlab_flag
-
-    @property
-    def python_flag(self):
-        return self.__python_flag
-
-    @property
-    def matlab_file(self):
-        return self.__matlab_file
-
-    @property
-    def python_file(self):
-        return self.__python_file
-
-    @matlab_flag.setter
-    def matlab_flag(self, filename):
-        self.__matlab_flag = os.path.join(self.shared_folder, filename)
-
-    @python_flag.setter
-    def python_flag(self, filename):
-        self.__python_flag = os.path.join(self.shared_folder, filename)
-
-    @matlab_file.setter
-    def matlab_file(self, filename):
-        self.__matlab_file = os.path.join(self.shared_folder, filename)
-
-    @python_file.setter
-    def python_file(self, filename):
-        self.__python_file = os.path.join(self.shared_folder, filename)
 
     def is_matlab_flag_set(self):
         return os.path.isfile(self.matlab_flag)
