@@ -15,11 +15,11 @@ classdef MatlabInterface
             if nargin == 0
                 channel_name = 'default'
             end
-            shared_folder = [tempdir, 'matlab_bridge/']
-            self.matlab_flag =  [shared_folder, channel_name, '/flagMatlabFinished.txt'];
-            self.python_flag = [shared_folder, channel_name, '/flagPythonFinished.txt']
-            self.matlab_file = [shared_folder, channel_name, '/matlab_file.json'];
-            self.python_file = [shared_folder, channel_name, '/python_file.json'];
+            shared_folder = [tempdir, 'matlab_bridge/', channel_name]
+            self.matlab_flag =  [shared_folder, '/flagMatlabFinished.txt'];
+            self.python_flag = [shared_folder, '/flagPythonFinished.txt']
+            self.matlab_file = [shared_folder, '/matlab_file.json'];
+            self.python_file = [shared_folder, '/python_file.json'];
             % create the folder for file exchange
             [s,mess,messid] = mkdir(shared_folder);
             % in case the folder already exist clear its content
