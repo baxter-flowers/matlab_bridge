@@ -1,72 +1,28 @@
 classdef MatlabInterface
-    %UNTITLED Summary of this class goes here
-    %   Detailed explanation goes here
     
     properties
-            matlab_flag =  '';
-            python_flag = '';
-            matlab_file = '';
-            python_file = '';
-            rate = 0.001;
+        context;
+        socket;
+        address;
     end
     
     methods
-        function self = MatlabInterface(channel_name)
+        function self = MatlabInterface(port)
             if nargin == 0
-                channel_name = 'default'
+                port = 5560;
             end
-            shared_folder = [tempdir, 'matlab_bridge/', channel_name]
-            self.matlab_flag =  [shared_folder, '/flagMatlabFinished.txt'];
-            self.python_flag = [shared_folder, '/flagPythonFinished.txt']
-            self.matlab_file = [shared_folder, '/matlab_file.json'];
-            self.python_file = [shared_folder, '/python_file.json'];
-            % create the folder for file exchange
-            [s,mess,messid] = mkdir(shared_folder);
-            % in case the folder already exist clear its content
-            delete([shared_folder,'*'])
+            self.context = zmq.core.ctx_new();
+            self.socket = zmq.core.socket(self.context, 'ZMQ_REQ');
+            self.address = ['tcp://127.0.0.1:', num2str(port)];
+            zmq.core.connect(self.socket, self.address);
         end
-               
-        function bool_flag = is_python_flag_set(self)
-            % check if file exist
-            bool_flag = (exist(self.python_flag, 'file') == 2);
-        end
-
-        function unset_python_flag(self)
-            delete(self.python_flag)
-        end
-
-        function wait_for_python_flag(self)
-            % loop until the flag is set
-            while ~self.is_python_flag_set()
-                pause(self.rate)
-            end
-        end
-        
-        function set_matlab_flag(self)
-            % create the empty file
-            fclose(fopen(self.matlab_flag, 'w'));
-        end
-        
-        function remove_python_file(self)
-            delete(self.python_file)
-        end
-        
+                      
         function send(self, data)
-            % write the json file to the shared folder
-            savejson('', data, self.matlab_file);
-            % set the matlab flag
-            self.set_matlab_flag()
+            zmq.core.send(self.socket, uint8(savejson('', data)));
         end
         
         function s = read(self)
-            % wait for the flag to be set
-            self.wait_for_python_flag()
-            % open the structure
-            s = loadjson(self.python_file);
-            % remove the read file
-            self.remove_python_file()
-            % unset the flag
-            self.unset_python_flag()
+            s = loadjson(char(zmq.core.recv(self.socket)));
         end
     end
 end
