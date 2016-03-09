@@ -1,0 +1,23 @@
+#!/usr/bin/env python
+from matlab_bridge.python_interface import PythonInterface
+
+# This tests a multi-channel communication (i.e. through different network ports)
+# We send and receive lists of floats on 2 different channels 5560 and 5561
+
+print("Declaring the interfaces...")
+channel_5560 = PythonInterface(5560)
+channel_5561 = PythonInterface(5561)
+
+print("Reading channel 5560 from Matlab...")
+recv_5560 = channel_5560.read()
+print("Received on channel 5560: {}".format(recv_5560))
+
+print("Reading channel 5561 from Matlab...")
+recv_5561 = channel_5561.read()
+print("Received on channel 5561: {}".format(recv_5561))
+
+channel_5560.send([5560.4, 5560.5, 5560.6])
+print("3-float answer to Matlab channel 5560 sent!")
+
+channel_5561.send([5561.4, 5561.5, 5561.6])
+print("3-float answer to Matlab channel 5561 sent!")
