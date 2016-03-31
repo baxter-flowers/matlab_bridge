@@ -14,7 +14,7 @@ class PythonInterface(object):
         self.socket.bind("tcp://*:%s" % self.port)
 
     def send(self, data):
-        self.socket.send(json.dumps(data))
+        self.socket.send_string(json.dumps(data))
 
     def read(self):
         return self.socket.recv_json()

@@ -8,16 +8,15 @@ Works on Windows and Linux.
 
 ## Installing procedure
 
- - [Install the ZMQ 3 library + pyZMQ](http://zeromq.org/intro:get-the-software) for your OS and compile it if necessary
+ - [Install the last ZMQ lib](http://zeromq.org/intro:get-the-software) for your OS and compile it if necessary
   - On Ubuntu and derivates it's just a `sudo apt-get install libzmq3-dev python-zmq`
+  - On Windows grab a stable build, and don't forget to add the DLL folder (like `C:\Program Files\ZeroMQ 4.0.4\bin`) to your user environment variable `Path` 
+ - Install the ZMQ bindings for python (Except Ubuntu, we already installed them during the first step)
+  - `conda install pyzmq` if you use Anaconda or `pip install pyzmq` should be fine
  - Clone this repository, including its submodule matlab-zmq
- - Edit the file [matlab_source/matlab-zmq/config.m](https://github.com/fagg/matlab-zmq/blob/6bb0c025cd605e39454e6fc6c656233e3fcf0d07/config.m) by changing the name of the library, the path to the headers and to the library
-  - On Linux, it's likely:
-  ```
-  ZMQ_COMPILED_LIB = 'libzmq.so';
-  ZMQ_LIB_PATH = '/usr/lib/x86_64-linux-gnu/';
-  ZMQ_INCLUDE_PATH = '/usr/include/';
-  ```
+ - Edit the file [matlab_source/matlab-zmq/config.m](https://github.com/fagg/matlab-zmq/blob/6bb0c025cd605e39454e6fc6c656233e3fcf0d07/config.m) by changing the name of the library, the path to the headers and to the library.
+  - Inspire yourselves from the provided config-xxxxxx.m corresponding to your plateform
+  - The library path specified in this file must point to the *.lib ZMQ files, not the *.dll
  - Add (/matlab_source)[matlab_bridge/tree/zmq/matlab_source] and its subfolders into your Matlab path
  - Compile matlab-zmq in Matlab by running [matlab_source/matlab-zmq/compile.m](https://github.com/fagg/matlab-zmq/blob/6bb0c025cd605e39454e6fc6c656233e3fcf0d07/compile.m), check that the last display returns `errors = 0` (you might have warnings though)
  - Install the Python library by executing the [setup script](setup.py)
