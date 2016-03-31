@@ -3,10 +3,14 @@ import json
 import zmq
 
 class PythonInterface(object):
-    def __init__(self, port=5560):
+    DEFAULT_PORT=5560
+    def __init__(self, port=DEFAULT_PORT):
         self.context = zmq.Context()
         self.socket = self.context.socket(zmq.PAIR)
-        self.port = port
+        if 1024 < port:
+            self.port = port
+        else:
+            raise ValueError("Invalid port {}, pick a port > 1024. The default port is {}, perhaps try {}?".format(port, self.DEFAULT_PORT, self.DEFAULT_PORT+1))
         self.socket.bind("tcp://*:%s" % self.port)
 
     def send(self, data):
