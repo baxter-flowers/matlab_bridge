@@ -12,7 +12,7 @@ classdef MatlabInterface
                 port = 5560;
             end
             self.context = zmq.core.ctx_new();
-            self.socket = zmq.core.socket(self.context, 'ZMQ_REQ');
+            self.socket = zmq.core.socket(self.context, 'ZMQ_PAIR');
             self.address = ['tcp://127.0.0.1:', num2str(port)];
             zmq.core.connect(self.socket, self.address);
         end
